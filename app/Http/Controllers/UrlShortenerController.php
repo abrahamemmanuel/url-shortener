@@ -1,55 +1,33 @@
 <?php
+declare(strict_types=1);
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Response;
+use Illuminate\Http\Request;
+use App\Http\Requests\UrlInputRequest;
 use App\Interfaces\UrlShortenerInterface;
 
 class UrlShortenerController extends Controller implements UrlShortenerInterface
 {
-    /**
-     * Create a short url
-     *
-     * @param string $longUrl
-     * @return string
-     */
-    public function encode(string $longUrl): string
+    public function encode(UrlInputRequest $request): JsonResponse|Response
     {
         //
     }
 
-    /**
-     * Get a long url
-     *
-     * @param string $shortUrl
-     * @return string
-     */
-    public function decode(string $shortUrl): string
+    public function decode(UrlInputRequest $request): JsonResponse|Response
     {
         //
     }
 
-    /**
-     * Redirect to a long url
-     *
-     * @param string $shortUrl
-     * @return string
-     */
-    public function redirect(string $shortUrl): string
+    public function redirect(UrlInputRequest $request): JsonResponse|Response
     {
         //
     }
 
-    /**
-     * Get the stats of a short url
-     *
-     * @param string $shortUrl
-     * @return array
-     */
-    public function stats(string $shortUrl): array
+    public function stats(Request $request): JsonResponse|Response
     {
         //
     }
-    //
 }

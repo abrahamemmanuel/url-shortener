@@ -15,8 +15,8 @@ class UrlValidator
      */
     public function handle(Request $request, Closure $next): Response
     {
-        $longUrl = $request->input('long_url');
-        if (!filter_var($longUrl, FILTER_VALIDATE_URL)) {
+        $url = $request->input('url');
+        if (!filter_var($url, FILTER_VALIDATE_URL)) {
             return response()->json([
                 'error' => 'The URL provided is not valid'
             ], Response::HTTP_BAD_REQUEST);
