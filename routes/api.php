@@ -17,8 +17,8 @@ use App\Http\Controllers\UrlShortenerController;
 
 Route::group(['middleware' => 'url.validate'], function () {
     Route::post('/encode', [UrlShortenerController::class, 'encode']);
-    Route::get('/{url_path}', [UrlShortenerController::class, 'redirect']);
 });
 
+Route::get('/{url_path}', [UrlShortenerController::class, 'redirect']);
 Route::post('/decode', [UrlShortenerController::class, 'decode']);
 Route::get('/statistic/{url_path}', [UrlShortenerController::class, 'stats']);
