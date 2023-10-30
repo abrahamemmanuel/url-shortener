@@ -13,7 +13,9 @@ class UrlShortenerController extends Controller implements UrlShortenerInterface
 {
     public function encode(UrlInputRequest $request): JsonResponse|Response
     {
-        //
+        return response()->json([
+            'message' => $request->input('url')
+        ]);
     }
 
     public function decode(UrlInputRequest $request): JsonResponse|Response

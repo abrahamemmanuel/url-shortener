@@ -2,6 +2,7 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\UrlShortenerController;
 
 /*
 |--------------------------------------------------------------------------
@@ -14,7 +15,10 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-//return a basic hello world
-Route::get('/hello', function () {
-    return 'Hello World';
+Route::group(['middleware' => 'url.validate'], function () {
+    Route::post('/encode', [UrlShortenerController::class, 'encode']);
+    Route::get('/{url_path}', [UrlShortenerController::class, 'redirect']);
 });
+
+Route::post('/decode', [UrlShortenerController::class, 'decode']);
+Route::get('/statistic/{url_path}', [UrlShortenerController::class, 'stats']);
