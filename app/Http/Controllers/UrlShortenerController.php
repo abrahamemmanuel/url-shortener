@@ -20,7 +20,7 @@ class UrlShortenerController extends Controller implements UrlShortenerInterface
         return response()->json([
             'message' => 'Short URL created successfully',
             'success' => true,
-            'data' => (new UrlShortener($request))->setShortLinkData()
+            'data' => (new UrlShortener($request))->setShortLinkData()['short_url']
         ], Response::HTTP_CREATED);
     }
 

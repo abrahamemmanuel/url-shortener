@@ -16,10 +16,10 @@ class UrlShortenerService
     protected string $url_path;
     protected string $long_url;
     protected string $short_url;
-    protected array $base_url;
-    protected string $id;
+    protected string $base_url;
+    protected object $id;
     
-    public function __construct(Request $request = null, string $url_path = null)
+    public function __construct(Request $request = null, string $url_path = "")
     {
         $this->id = Shortid::generate();
         $this->long_url = $request->input('url') ?? null;
@@ -50,7 +50,7 @@ class UrlShortenerService
         ];
     }
 
-    public getShortLinkData(): array
+    public function getShortLinkData(): array
     {
         try {
             return Cache::get($this->url_path);
