@@ -15,15 +15,13 @@ use Illuminate\Support\Facades\Cache;
 
 class UrlShortenerController extends Controller implements UrlShortenerInterface
 {
-    protected UrlShortener $urlShortener;
-    public function __construct(UrlShortener $urlShortener)
-    {
-        $this->urlShortener = $urlShortener;
-    }
-    
     public function encode(UrlInputRequest $request): JsonResponse|Response
     {
-
+        return response()->json([
+            'message' => 'Short URL created successfully',
+            'success' => true,
+            'data' => (new UrlShortener($request))->setShortLinkData()
+        ], Response::HTTP_CREATED);
     }
 
     public function decode(UrlInputRequest $request): JsonResponse|Response
