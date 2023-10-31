@@ -9,11 +9,18 @@ use Illuminate\Http\Request;
 use Illuminate\Http\RedirectResponse;
 use App\Http\Requests\UrlInputRequest;
 use App\Interfaces\UrlShortenerInterface;
+use App\Services\UrlShortenerService as UrlShortener;
 use PUGX\Shortid\Shortid;
 use Illuminate\Support\Facades\Cache;
 
 class UrlShortenerController extends Controller implements UrlShortenerInterface
 {
+    protected UrlShortener $urlShortener;
+    public function __construct(UrlShortener $urlShortener)
+    {
+        $this->urlShortener = $urlShortener;
+    }
+    
     public function encode(UrlInputRequest $request): JsonResponse|Response
     {
 
