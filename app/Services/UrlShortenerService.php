@@ -20,13 +20,12 @@ class UrlShortenerService
     protected object $id;
     protected bool $is_found;
     
-    public function __construct(Request $request = null, string $url_path = "")
+    public function __construct(Request $request)
     {
-        
         $this->id = Shortid::generate();
-        $this->long_url = $request->input('url') ?? null;
-        $this->url_path = explode('/', $request->input('url'))[3] ?? $url_path;
-        $this->base_url = $request->root() ?? null;
+        $this->long_url = $request->input('url') ?? "";
+        $this->url_path =  explode('/', $request->input('url'))[3] ?? $request->input('url');
+        $this->base_url = $request->root() ?? "";
         $this->short_url = $this->base_url . '/' . $this->id ?? null;
     }
 
@@ -36,16 +35,14 @@ class UrlShortenerService
             'long_url' => $this->long_url,
             'short_url' => $this->short_url,
             'url_path' => $this->id,
-            'statistic' => [
+            'statistics' => [
                 'click_count' => 0,
                 'last_accessed' => null,
                 'date_time_accessed' => [],
-                'referrer' => [],
-                'geographic' => [
-                    'country' => [],
-                    'city' => []
-                ],
-                'device_info' => []
+                'device_info' => [
+                    'ip_address' => [],
+                    "browser" => [],
+                ]
             ],
             'created_at' => now(),
             'updated_at' => now()
@@ -68,22 +65,20 @@ class UrlShortenerService
         return Cache::get($this->id);
     }
 
-    public function updateShortLink(): array | JsonResponse
+    public function updateShortLinkStatistics(): string
     {
-        return Cache::put($this->url_path, $this->updateStatisticData(), 60 * 60);
- 
+        Cache::put($this->url_path, $this->updateStatisticsData(), 60 * 60);
+        return $this->getShortLinkData()['long_url'];
     }
 
-    public function updateStatisticData(): array
+    public function updateStatisticsData(): array
     {
         $data = $this->getShortLinkData();
-        $data['statistic']['click_count'] += 1;
-        $data['statistic']['last_accessed'] = now();
-        $data['statistic']['date_time_accessed'][] = now();
-        $data['statistic']['referrer'][] = $_SERVER['HTTP_REFERER'];
-        $data['statistic']['geographic']['country'][] = $_SERVER['HTTP_CF_IPCOUNTRY'];
-        $data['statistic']['geographic']['city'][] = $_SERVER['HTTP_CF_IPCITY'];
-        $data['statistic']['device_info'][] = $_SERVER['HTTP_USER_AGENT'];
+        $data['statistics']['click_count'] += 1;
+        $data['statistics']['last_accessed'] = now();
+        $data['statistics']['date_time_accessed'][] = now();
+        $data['statistics']['device_info']['ip_address'][] = request()->ip();
+        $data['statistics']['device_info']['browser'][] = request()->userAgent();
         return $data;
     }
 }

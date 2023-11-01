@@ -29,7 +29,6 @@ class UrlShortenerController extends Controller implements UrlShortenerInterface
     public function decode(UrlInputRequest $request): JsonResponse|Response
     {
         $data = new UrlShortener($request);
-
         return !$data->checkIfShortLinkExists() 
         ?
         $this->customExceptionMessageHandler()
@@ -44,11 +43,29 @@ class UrlShortenerController extends Controller implements UrlShortenerInterface
 
     public function redirect(Request $request, $url_path): JsonResponse|RedirectResponse
     {
+        $request->merge(['url' => $url_path]);
+        $data = new UrlShortener($request);
 
+        return !$data->checkIfShortLinkExists() 
+        ?
+        $this->customExceptionMessageHandler()
+        :
+        redirect()->away($data->updateShortLinkStatistics());
     }
 
     public function stats(Request $request, $url_path): JsonResponse|Response
     {
+        $request->merge(['url' => $url_path]);
+        $data = new UrlShortener($request);
 
+        return !$data->checkIfShortLinkExists() 
+        ?
+        $this->customExceptionMessageHandler()
+        :
+        $this->customSuccessMessageHandler(
+            $request->input('url') . ' statistics fetched successfully',
+            $data->getShortLinkData()['statistics'], 
+            Response::HTTP_OK
+        );
     }
 }
