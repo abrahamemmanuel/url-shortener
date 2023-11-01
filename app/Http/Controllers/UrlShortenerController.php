@@ -63,8 +63,8 @@ class UrlShortenerController extends Controller implements UrlShortenerInterface
         $this->customExceptionMessageHandler()
         :
         $this->customSuccessMessageHandler(
-            $request->input('url') . ' statistics fetched successfully',
-            $data->getShortLinkData()['statistics'], 
+            $request->input('url') . ' statistic fetched successfully',
+            $data->getShortLinkData()['statistic'], 
             Response::HTTP_OK
         );
     }
