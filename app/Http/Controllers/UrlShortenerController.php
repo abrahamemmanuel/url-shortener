@@ -53,7 +53,7 @@ class UrlShortenerController extends Controller implements UrlShortenerInterface
         redirect()->away($data->updateShortLinkStatistic());
     }
 
-    public function statistics(Request $request, $url_path): JsonResponse|Response
+    public function statistic(Request $request, $url_path): JsonResponse|Response
     {
         $request->merge(['url' => $url_path]);
         $data = new UrlShortener($request);

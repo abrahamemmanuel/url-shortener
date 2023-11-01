@@ -21,4 +21,4 @@ Route::group(['middleware' => 'url.validate'], function () {
 });
 
 Route::get('/{url_path}', [UrlShortenerController::class, 'redirect']);
-Route::get('/statistics/{url_path}', [UrlShortenerController::class, 'statistics']);
+Route::get('/statistic/{url_path}', [UrlShortenerController::class, 'statistic']);
