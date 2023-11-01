@@ -13,25 +13,25 @@ interface UrlShortenerInterface
 {
     /**
      * Create a short url
-     * @param string $longUrl
+     * @param string $request
      */
     public function encode(UrlInputRequest $request): JsonResponse|Response;
 
     /**
      * Get a long url
-     * @param string $shortUrl
+     * @param string $request
      */
     public function decode(UrlInputRequest $request): JsonResponse|Response;
 
     /**
-     * Redirect to a long url
-     * @param string $shortUrl
+     * Redirect to a long url or original url
+     * @param string $request $url_path
      */
     public function redirect(UrlInputRequest $request, string $url_path): JsonResponse|RedirectResponse;
 
     /**
      * Get the stats of a short url
-     * @param string $shortUrl
+     * @param string $url_path
      */
     public function statistic(Request $request, string $url_path): JsonResponse|Response;
 }
