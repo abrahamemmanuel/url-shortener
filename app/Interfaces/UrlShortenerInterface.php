@@ -33,5 +33,5 @@ interface UrlShortenerInterface
      * Get the stats of a short url
      * @param string $shortUrl
      */
-    public function stats(Request $request, string $url_path): JsonResponse|Response;
+    public function statistics(Request $request, string $url_path): JsonResponse|Response;
 }
