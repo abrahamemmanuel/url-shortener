@@ -10,23 +10,36 @@ use Illuminate\Http\RedirectResponse;
 use App\Http\Requests\UrlInputRequest;
 use App\Interfaces\UrlShortenerInterface;
 use App\Services\UrlShortenerService as UrlShortener;
-use PUGX\Shortid\Shortid;
+use App\Traits\CustomHttpResponseTrait;
 use Illuminate\Support\Facades\Cache;
 
 class UrlShortenerController extends Controller implements UrlShortenerInterface
 {
+    use CustomHttpResponseTrait;
+
     public function encode(UrlInputRequest $request): JsonResponse|Response
     {
-        return response()->json([
-            'message' => 'Short URL created successfully',
-            'success' => true,
-            'data' => (new UrlShortener($request))->setShortLinkData()['short_url']
-        ], Response::HTTP_CREATED);
+        return $this->customSuccessMessageHandler(
+            'Short Url created successfully', 
+            (new UrlShortener($request))->createShortLink(), 
+            Response::HTTP_CREATED
+        );
     }
 
     public function decode(UrlInputRequest $request): JsonResponse|Response
     {
+        $data = new UrlShortener($request);
 
+        return !$data->checkIfShortLinkExists() 
+        ?
+        $this->customExceptionMessageHandler()
+        :
+        $this->customSuccessMessageHandler(
+            $request->input('url') . ' decoded successfully',
+            $data->getShortLinkData()['long_url'], 
+            Response::HTTP_OK
+        );
+    
     }
 
     public function redirect(Request $request, $url_path): JsonResponse|RedirectResponse

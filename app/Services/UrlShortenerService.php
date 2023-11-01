@@ -18,9 +18,11 @@ class UrlShortenerService
     protected string $short_url;
     protected string $base_url;
     protected object $id;
+    protected bool $is_found;
     
     public function __construct(Request $request = null, string $url_path = "")
     {
+        
         $this->id = Shortid::generate();
         $this->long_url = $request->input('url') ?? null;
         $this->url_path = explode('/', $request->input('url'))[3] ?? $url_path;
@@ -52,29 +54,24 @@ class UrlShortenerService
 
     public function getShortLinkData(): array
     {
-        try {
-            return Cache::get($this->url_path);
-        } catch (\Throwable $exception) {
-            $this->customErrorMessageHandler($exception);
-        }
+        return Cache::get($this->url_path);
+    }
+
+    public function checkIfShortLinkExists(): bool
+    {
+        return Cache::has($this->url_path);
     }
 
     public function createShortLink(): array
     {
-        try {
-            return Cache::put($this->id, $this->setShortLinkData(), 60 * 60);
-        } catch (\Throwable $exception) {
-            $this->customErrorMessageHandler($exception);
-        }
+        Cache::put($this->id, $this->setShortLinkData(), 60 * 60);
+        return Cache::get($this->id);
     }
 
-    public function updateShortLink(): array
+    public function updateShortLink(): array | JsonResponse
     {
-        try {
-            return Cache::put($this->url_path, $this->updateStatisticData(), 60 * 60);
-        } catch (\Throwable $exception) {
-            $this->customErrorMessageHandler($exception);
-        }
+        return Cache::put($this->url_path, $this->updateStatisticData(), 60 * 60);
+ 
     }
 
     public function updateStatisticData(): array
@@ -88,14 +85,5 @@ class UrlShortenerService
         $data['statistic']['geographic']['city'][] = $_SERVER['HTTP_CF_IPCITY'];
         $data['statistic']['device_info'][] = $_SERVER['HTTP_USER_AGENT'];
         return $data;
-    }
-
-    public function customErrorMessageHandler(object $exception): JsonResponse
-    {
-        return response()->json([
-            'message' => $exception->getMessage(),
-            'success' => false,
-            'data' => null,
-        ], Response::HTTP_NOT_FOUND);
     }
 }
