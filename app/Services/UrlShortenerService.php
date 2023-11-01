@@ -35,7 +35,7 @@ class UrlShortenerService
             'long_url' => $this->long_url,
             'short_url' => $this->short_url,
             'url_path' => $this->id,
-            'statistics' => [
+            'statistic' => [
                 'click_count' => 0,
                 'last_accessed' => null,
                 'date_time_accessed' => [],
@@ -65,20 +65,20 @@ class UrlShortenerService
         return Cache::get($this->id);
     }
 
-    public function updateShortLinkStatistics(): string
+    public function updateShortLinkStatistic(): string
     {
-        Cache::put($this->url_path, $this->updateStatisticsData(), 60 * 60);
+        Cache::put($this->url_path, $this->updateStatisticData(), 60 * 60);
         return $this->getShortLinkData()['long_url'];
     }
 
-    public function updateStatisticsData(): array
+    public function updateStatisticData(): array
     {
         $data = $this->getShortLinkData();
-        $data['statistics']['click_count'] += 1;
-        $data['statistics']['last_accessed'] = now();
-        $data['statistics']['date_time_accessed'][] = now();
-        $data['statistics']['device_info']['ip_address'][] = request()->ip();
-        $data['statistics']['device_info']['browser'][] = request()->userAgent();
+        $data['statistic']['click_count'] += 1;
+        $data['statistic']['last_accessed'] = now();
+        $data['statistic']['date_time_accessed'][] = now();
+        $data['statistic']['device_info']['ip_address'][] = request()->ip();
+        $data['statistic']['device_info']['browser'][] = request()->userAgent();
         return $data;
     }
 }

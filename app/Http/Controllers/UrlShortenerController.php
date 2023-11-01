@@ -50,7 +50,7 @@ class UrlShortenerController extends Controller implements UrlShortenerInterface
         ?
         $this->customExceptionMessageHandler()
         :
-        redirect()->away($data->updateShortLinkStatistics());
+        redirect()->away($data->updateShortLinkStatistic());
     }
 
     public function statistics(Request $request, $url_path): JsonResponse|Response
