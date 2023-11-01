@@ -7,7 +7,6 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Response;
 use Illuminate\Http\Request;
 use Illuminate\Http\RedirectResponse;
-use App\Http\Requests\UrlShortenerRepository;
 use PUGX\Shortid\Shortid;
 use Illuminate\Support\Facades\Cache;
 
@@ -17,7 +16,7 @@ class UrlShortenerService
     protected string $long_url;
     protected string $short_url;
     protected string $base_url;
-    protected object $id;
+    public object $id;
     protected bool $is_found;
     
     public function __construct(Request $request)
