@@ -60,13 +60,13 @@ class UrlShortenerService
 
     public function createShortLink(): array
     {
-        Cache::put($this->id, $this->setShortLinkData(), 60 * 60);
+        Cache::put($this->id, $this->setShortLinkData(), 24 * 60 * 60);
         return Cache::get($this->id);
     }
 
     public function updateShortLinkStatistic(): string
     {
-        Cache::put($this->url_path, $this->updateStatisticData(), 60 * 60);
+        Cache::put($this->url_path, $this->updateStatisticData(), 24 * 60 * 60);
         return $this->getShortLinkData()['long_url'];
     }
 
