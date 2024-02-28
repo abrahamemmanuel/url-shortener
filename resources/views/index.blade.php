@@ -4,6 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Abis URL Shortener</title>
+    <meta name="keywords" content="URL shortener, Short URL generator, Link shortener, URL shrinker, Shorten link service, URL trimmer, Link minimizer, URL abbreviation, Tiny URL creator, Web address compressor, URL condenser, Long URL reducer, URL compacting tool, URL truncator, Shortened web links, Custom short URLs, Shorten website addresses, URL slimming service, Hyperlink shortening, Compact URL service">
+    <link rel="icon" href="https://res.cloudinary.com/dqjwsobvg/image/upload/v1708533115/Screenshot_2024-02-21_at_16.49.01-removebg-preview.png" type="image/png">
     <style>
         body {
             font-family: Arial, sans-serif;
