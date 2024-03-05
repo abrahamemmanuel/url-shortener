@@ -6,6 +6,8 @@
     <title>Abis URL Shortener</title>
     <meta name="keywords" content="URL shortener, SEO Marketing Tools, Short URL generator, Link shortener, URL shrinker, Shorten link service, URL trimmer, Link minimizer, URL abbreviation, Tiny URL creator, Web address compressor, URL condenser, Long URL reducer, URL compacting tool, URL truncator, Shortened web links, Custom short URLs, Shorten website addresses, URL slimming service, Hyperlink shortening, Compact URL service">
     <link rel="icon" href="https://res.cloudinary.com/dqjwsobvg/image/upload/v1708533115/Screenshot_2024-02-21_at_16.49.01-removebg-preview.png" type="image/png">
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1355605849247068"
+     crossorigin="anonymous"></script>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -222,14 +224,16 @@
                 response.json()
             ).then(data => {
                 console.log('Success:', data.data.short_url);
+                // Set the short URL input value
                 document.getElementById("short-url").value = data.data.short_url;
+                // Get a random quote
+                const randomQuote = quotes[Math.floor(Math.random() * quotes.length)];
+                showToast(randomQuote);
+
+                saveUrlsToDatabase(longUrl, data.data.short_url);
             }).catch((error) => {   
                 console.error('Error:', error);
             });
-
-            // Get a random quote
-            const randomQuote = quotes[Math.floor(Math.random() * quotes.length)];
-            showToast(randomQuote);
         }
 
         function showToast(message) {
@@ -253,6 +257,26 @@
             // Regular expression for validating URL
             const urlRegex = /^(ftp|http|https):\/\/[^ "]+$/;
             return urlRegex.test(url);
+        }
+
+        function saveUrlsToDatabase(longUrl, shortUrl) {
+            // Make a POST request to your server to save the URLs to the database
+            fetch('/save-urls', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ long_url: longUrl, short_url: shortUrl }),
+            }).then(response => {
+                console.log('Response:', response);
+                if (response.ok) {
+                    console.log('URLs saved to database successfully');
+                } else {
+                    console.error('Failed to save URLs to database');
+                }
+            }).catch(error => {
+                console.error('Error saving URLs to database:', error);
+            });
         }
     </script>
 </body>

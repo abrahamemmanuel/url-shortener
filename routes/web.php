@@ -28,5 +28,6 @@ Route::get('/clear/{pwd}', function() {
     }
     Artisan::call('cache:clear');
     Artisan::call('config:clear');
+    Artisan::call('optimize:clear');
     return "Cache is cleared";
 });

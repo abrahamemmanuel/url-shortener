@@ -12,6 +12,7 @@ use App\Interfaces\UrlShortenerInterface;
 use App\Services\UrlShortenerService as UrlShortener;
 use App\Traits\CustomHttpResponseTrait;
 use Illuminate\Support\Facades\Cache;
+use App\Repository\UrlShortenerRepository;
 
 class UrlShortenerController extends Controller implements UrlShortenerInterface
 {
@@ -67,5 +68,15 @@ class UrlShortenerController extends Controller implements UrlShortenerInterface
             $data->getShortLinkData()['statistic'], 
             Response::HTTP_OK
         );
+    }
+
+    public function saveUrls(Request $request): JsonResponse|Response
+    {
+        $result = UrlShortenerRepository::saveUrlPath($request->long_url, $request->short_url);
+        return response()->json([
+            'message' => $result ? 'Url saved successfully' : 'Url not saved',
+            'success' => $result,
+            'data' => null,
+        ], $result ? Response::HTTP_CREATED : Response::HTTP_BAD_REQUEST);
     }
 }

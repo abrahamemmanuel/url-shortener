@@ -61,7 +61,6 @@ class UrlShortenerService
 
     public function createShortLink(): array
     {
-        $this->saveToDB();
         Cache::put($this->id, $this->setShortLinkData(), 24 * 60 * 60);
         return Cache::get($this->id);
     }
@@ -81,15 +80,5 @@ class UrlShortenerService
         $data['statistic']['device_info']['ip_address'][] = request()->ip();
         $data['statistic']['device_info']['browser'][] = request()->userAgent();
         return $data;
-    }
-
-    public function saveToDB(): ShortUrl
-    {
-        $short_url = new ShortUrl();
-        $short_url->long_url = $this->long_url;
-        $short_url->short_url = $this->short_url;
-        $short_url->url_path = $this->id;
-        $short_url->save();
-        return $short_url;
     }
 }
